@@ -41,6 +41,19 @@ function ExperienceCard({ company, title, date, bullets }) {
 }
 
 export default function MamathaPortfolio() {
+  // Test if image exists
+  const [imageError, setImageError] = React.useState(false);
+  
+  React.useEffect(() => {
+    const img = new Image();
+    img.src = '/profilepic.png';
+    img.onload = () => console.log('Profile image loaded successfully');
+    img.onerror = () => {
+      console.log('Profile image failed to load');
+      setImageError(true);
+    };
+  }, []);
+  
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 antialiased">
       <motion.header 
@@ -174,14 +187,26 @@ export default function MamathaPortfolio() {
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.3 }}
                 >
-                  {/* Placeholder for professional photo - can be replaced with actual image */}
-                  <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
+                  {/* Professional photo */}
+                  {imageError ? (
+                    <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  ) : (
+                    <img 
+                      src="/profilepic.png" 
+                      alt="N Mamatha Reddy" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        console.log("Profile image failed to load, showing fallback");
+                        setImageError(true);
+                      }}
+                    />
+                  )}
                 </motion.div>
-              
+                
               </div>
             </div>
             
